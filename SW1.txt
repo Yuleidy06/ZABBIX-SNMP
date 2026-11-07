@@ -1,0 +1,22 @@
+! =============================================================
+! SW1 - Cisco IOSvL2
+! Direccionamiento de gestion + SNMP solo lectura
+! Gi0/0 -> R1 Fa0/0   |   Gi0/1 -> SRV-ZABBIX   |   Vlan1 10.9.49.2/24
+! =============================================================
+configure terminal
+hostname SW1
+no ip domain-lookup
+!
+! --- Interfaz de gestion ---
+interface vlan 1
+ ip address 10.9.49.2 255.255.255.0
+ no shutdown
+exit
+ip default-gateway 10.9.49.1
+!
+! --- SNMP comunidad de solo lectura (RO) ---
+snmp-server community RO_20220949 RO
+snmp-server location Laboratorio-ITLA
+snmp-server contact Yuleidy-20220949
+end
+wr

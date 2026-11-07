@@ -1,0 +1,30 @@
+! =============================================================
+! R1 - Cisco c7200
+! Direccionamiento + Servidor DHCP para la LAN + SNMP solo lectura
+! Fa0/0 -> SW1 Gi0/0   |   IP 10.9.49.1/24
+! =============================================================
+configure terminal
+hostname R1
+no ip domain-lookup
+!
+! --- Interfaz LAN ---
+interface FastEthernet0/0
+ ip address 10.9.49.1 255.255.255.0
+ no shutdown
+exit
+!
+! --- Servidor DHCP para la LAN ---
+ip dhcp excluded-address 10.9.49.1 10.9.49.20
+ip dhcp pool LAN
+ network 10.9.49.0 255.255.255.0
+ default-router 10.9.49.1
+ dns-server 8.8.8.8
+ lease 7
+exit
+!
+! --- SNMP comunidad de solo lectura (RO) ---
+snmp-server community RO_20220949 RO
+snmp-server location Laboratorio-ITLA
+snmp-server contact Yuleidy-20220949
+end
+wr
